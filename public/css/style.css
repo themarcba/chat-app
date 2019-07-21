@@ -1,0 +1,55 @@
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+body {
+    margin: 0 20px;
+}
+
+h1 {
+    color: #4b0082;
+    padding-top: 15px;
+    font-weight: bold;
+}
+
+p {
+    margin: 10px;
+}
+
+.message {
+    background: #eeefff;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 15px 0;
+    -webkit-box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
+    box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
+    display: table;
+    color: #392b44;
+}
+
+.timestamp {
+    font-size: .8em;
+    color: #d4d4d4;
+    margin-bottom: -12px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.btn.btn-primary, .btn.btn-primary:active {
+    background-color: #4b0082 !important;
+    border-color: #6c0082 !important;
+}
+
+#messages {
+    flex-grow: 1;
+}
+
+#message-form {
+    padding-bottom: 15px;
+}
