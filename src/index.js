@@ -23,7 +23,7 @@ io.on('connection', socket => {
     console.log('new websocket connection');
 
     // socket.emit('welcome')
-    socket.emit('message', generateMessage('🎉 Welcome 🎉'))
+    socket.emit('welcome')
     socket.broadcast.emit('userJoined')
 
     // socket.emit('countUpdated', count)

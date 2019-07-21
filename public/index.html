@@ -40,21 +40,21 @@
     <script id="message-template" type="text/html">
         <div class="timestamp">{{createdAt}}</div>
         <div class="message">
-            <p>💬 {{text}}</p>
+            <p>{{emoji}} {{text}}</p>
         </div>
     </script>
 
     <script id="rejected-message-template" type="text/html">
+        <div class="timestamp">{{createdAt}}</div>
         <div class="message">
             <p>🤬 Message <em>{{ originalMessage}}</em> has been blocked due to <strong>profanity</strong></p>
-            <!-- <div class="timestamp">{{createdAt}}</div> -->
         </div>
     </script>
 
     <script id="location-message-template" type="text/html">
+        <div class="timestamp">{{createdAt}}</div>
         <div class="message">
             <p>📍 User sent location: <a href="{{url}}" target="_blank">My current location</a></p>
-            <!-- <div class="timestamp">{{createdAt}}</div> -->
         </div>
     </script>
 

@@ -13,9 +13,10 @@ const messageTemplate = document.getElementById('message-template').innerHTML
 const rejectedMessageTemplate = document.getElementById('rejected-message-template').innerHTML
 const locationMessageTemplate = document.getElementById('location-message-template').innerHTML
 
-const addMessage = (message) => {
+const addMessage = (message, emoji = '💬') => {
     const html = Mustache.render(messageTemplate, {
-        text: message.text,
+        text: message,
+        emoji,
         createdAt: moment(message.createdAt).format('HH:mm')
     })
     $messagesDiv.insertAdjacentHTML('beforeend', html)
@@ -36,19 +37,19 @@ const addLocationMessage = data => {
 }
 
 socket.on('message', (message) => {
-    addMessage(message)
+    addMessage(message.text)
 })
 
 socket.on('welcome', () => {
-    addMessage('Welcome')
+    addMessage('🎉🎉🎉 Welcome 🎉🎉🎉', '')
 })
 
 socket.on('userJoined', () => {
-    addMessage('A new user joined')
+    addMessage('A new user joined', '😎')
 })
 
 socket.on('userLeft', () => {
-    addMessage('A user has left')
+    addMessage('A user has left', '😟')
 })
 
 socket.on('locationShared', data => {
