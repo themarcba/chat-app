@@ -12,13 +12,23 @@
 </head>
 
 <body>
-    <div class="flex">
-        <h1 class="text-center">Chat App</h1>
-        <div id="messages" class="col-sm-12"></div>
+    <div class="main-container">
+        <header>
+            <h1 class="text-center">Chat App</h1>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="overflow-container">
+                <div id="messages" class="col-sm-12 overflow-content">
+                    <!-- Messages will appear here -->
+                </div>
+            </div>
+        </div>
+
 
         <form id="message-form" class="form-inline">
             <div class="form-group col-sm-9">
-                <input name="message" placeholder="Message" type="text" class="form-control mb-2 mr-sm-2 col-sm-12">
+                <input name="message" placeholder="Type a message..." type="text" class="form-control mb-2 mr-sm-2 col-sm-12" autocomplete="off">
             </div>
 
             <div class="col-sm-3">
@@ -28,12 +38,11 @@
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="right: 0; left: auto;">
-                            <a id="share-location" class="dropdown-item" href="#">Share location</a>
+                            <button id="share-location" class="dropdown-item">Share location</button>
                         </div>
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
 
@@ -42,6 +51,7 @@
         <div class="message">
             <p>{{emoji}} {{text}}</p>
         </div>
+        <div class="message-spacer"></div>
     </script>
 
     <script id="rejected-message-template" type="text/html">
@@ -49,6 +59,7 @@
         <div class="message">
             <p>🤬 Message <em>{{ originalMessage}}</em> has been blocked due to <strong>profanity</strong></p>
         </div>
+        <div class="message-spacer"></div>
     </script>
 
     <script id="location-message-template" type="text/html">
@@ -56,6 +67,7 @@
         <div class="message">
             <p>📍 User sent location: <a href="{{url}}" target="_blank">My current location</a></p>
         </div>
+        <div class="message-spacer"></div>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

@@ -20,11 +20,13 @@ const addMessage = (message, emoji = '💬') => {
         createdAt: moment(message.createdAt).format('HH:mm')
     })
     $messagesDiv.insertAdjacentHTML('beforeend', html)
+    $messagesDiv.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
 const addRejectedMessage = originalMessage => {
     const html = Mustache.render(rejectedMessageTemplate, { originalMessage })
     $messagesDiv.insertAdjacentHTML('beforeend', html)
+    $messagesDiv.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
 const addLocationMessage = data => {
@@ -34,6 +36,7 @@ const addLocationMessage = data => {
         createdAt: moment(data.createdAt).format('HH:mm')
     })
     $messagesDiv.insertAdjacentHTML('beforeend', html)
+    $messagesDiv.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
 socket.on('message', (message) => {
@@ -83,9 +86,13 @@ $messageForm.addEventListener('submit', ev => {
 })
 
 $shareLocationButton.addEventListener('click', ev => {
+    console.log(1);
+
     $shareLocationButton.setAttribute('disabled', 'disabled')
     if ("geolocation" in navigator) {
+        console.log(2);
         navigator.geolocation.getCurrentPosition(position => {
+            console.log(3);
             socket.emit('shareLocation', {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude

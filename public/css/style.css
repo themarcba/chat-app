@@ -1,10 +1,28 @@
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
 textarea:focus,
-input:focus {
-    outline: none;
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+    border-color: inherit;
 }
+
 
 body {
     margin: 0 20px;
+}
+
+header {
+    height: 80px;
 }
 
 h1 {
@@ -21,12 +39,16 @@ p {
     background: #eeefff;
     border-radius: 10px;
     padding: 10px;
-    margin: 15px 0;
+    margin-top: 15px;
     -webkit-box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
     box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
     display: table;
     color: #392b44;
+}
+
+.message-spacer {
+    height: 20px;
 }
 
 .timestamp {
@@ -35,21 +57,37 @@ p {
     margin-bottom: -12px;
 }
 
-.flex {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.btn.btn-primary, .btn.btn-primary:active {
+.btn.btn-primary,
+.btn.btn-primary:active,
+.dropdown-item:active {
     background-color: #4b0082 !important;
     border-color: #6c0082 !important;
-}
-
-#messages {
-    flex-grow: 1;
+    outline: none;
 }
 
 #message-form {
     padding-bottom: 15px;
+    height: 100px;
+}
+
+/* Flex */
+
+.main-container {
+    height: 100vh;
+    /* or position:absolute; height:100%; */
+    display: flex;
+    flex-direction: column;
+}
+
+/* this is the flex container that will take the rest of the height */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    min-height: 0px;
+}
+
+/* the container for our overflowed content */
+.overflow-container {
+    flex: 1;
+    overflow: auto;
 }
