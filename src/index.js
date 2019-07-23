@@ -19,8 +19,6 @@ const publicPath = path.join(__dirname, '../public')
 app.use(express.static(publicPath))
 
 io.on('connection', socket => {
-    console.log('new websocket connection');
-
     socket.on('sendMessage', (message, acknowledge) => {
         const user = getUser(socket.id)
         if (!user) return generateMessage('Message could not be sent')

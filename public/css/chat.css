@@ -56,7 +56,7 @@ p {
 
 .message {
     background: #eeefff;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 10px;
     margin-top: 15px;
     -webkit-box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
@@ -64,16 +64,31 @@ p {
     box-shadow: 8px 8px 25px -15px rgba(0, 0, 0, 0.4);
     display: table;
     color: #392b44;
-}
-
-.message-spacer {
-    height: 20px;
+    display: inline-block;
 }
 
 .message-meta {
     font-size: .8em;
     color: #d4d4d4;
     margin-bottom: -12px;
+    text-align: left;
+}
+
+.message-container.self, .self .message-meta {
+    text-align: right;
+}
+.other .message {
+    border-top-left-radius: 0;
+}
+.self .message {
+    max-width: 75%;
+    background: #4b0082;
+    color: #fff;
+    border-top-right-radius: 0;
+}
+
+.message-spacer {
+    height: 20px;
 }
 
 .message-meta .from {

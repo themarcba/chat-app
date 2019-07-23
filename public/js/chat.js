@@ -23,10 +23,13 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
 
 const addMessage = (message, emoji = '', redirectToHome = false) => {
     const template = redirectToHome ? messageRedirectToHomeTemplate : messageTemplate
+    const isFromSelf = message.from === username
     const html = Mustache.render(template, {
         text: message.text,
         from: message.from,
         emoji,
+        side: isFromSelf ? 'self' : 'other',
+        isFromSelf,
         createdAt: moment(message.createdAt).format('HH:mm')
     })
     $messagesDiv.insertAdjacentHTML('beforeend', html)
@@ -43,6 +46,9 @@ const addLocationMessage = data => {
     const url = `https://www.google.com/maps/search/${data.latitude},${data.longitude}`
     const html = Mustache.render(locationMessageTemplate, {
         url,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        from: data.from,
         createdAt: moment(data.createdAt).format('HH:mm')
     })
     $messagesDiv.insertAdjacentHTML('beforeend', html)

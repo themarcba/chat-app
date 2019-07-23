@@ -50,11 +50,21 @@
     </div>
 
     <script id="message-template" type="text/html">
-        <div class="message-meta">{{createdAt}} &middot; <span class="from">{{from}}</span></div>
-        <div class="message">
-            <p>{{emoji}} {{text}}</p>
+        <div class="message-container {{side}}">
+            <div class="message-meta">
+                {{#isFromSelf}}
+                    <span class="from">{{from}}</span> &middot; {{createdAt}}
+                {{/isFromSelf}}
+                {{^isFromSelf}}
+                    {{createdAt}} &middot; <span class="from">{{from}}</span>
+                {{/isFromSelf}}
+
+            </div>
+            <div class="message">
+                <p>{{emoji}} {{text}}</p>
+            </div>
+            <div class="message-spacer"></div>
         </div>
-        <div class="message-spacer"></div>
     </script>
 
     <script id="rejected-message-template" type="text/html">
@@ -66,9 +76,12 @@
     </script>
 
     <script id="location-message-template" type="text/html">
-        <div class="message-meta">{{createdAt}}</div>
+        <div class="message-meta">{{createdAt}} &middot; <span class="from">{{from}}</span></div>
         <div class="message">
-            <p>📍 User sent location: <a href="{{url}}" target="_blank">My current location</a></p>
+            <p>📍 Here is my current location: ({{latitude}}, {{longitude}})</p>
+            <p class="text-center">
+                <a href="{{url}}" target="_blank" class="btn btn-primary">Open in Google Maps</a>
+            </p>
         </div>
         <div class="message-spacer"></div>
     </script>
