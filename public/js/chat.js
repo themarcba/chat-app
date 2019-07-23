@@ -19,7 +19,8 @@ const locationMessageTemplate = document.getElementById('location-message-templa
 const sidebarTemplate = document.getElementById('sidebar-template').innerHTML
 
 // Options
-const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+const { room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+let { username } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
 const addMessage = (message, emoji = '', redirectToHome = false) => {
     const template = redirectToHome ? messageRedirectToHomeTemplate : messageTemplate
@@ -64,8 +65,10 @@ socket.on('message', (message) => {
     addMessage(message)
 })
 
-socket.on('welcome', username => {
-    addMessage({ text: `🎉🎉🎉 Welcome, ${username.split(' ')[0]} 🎉🎉🎉`, from: serverName }, '')
+socket.on('welcome', xusername => {
+    addMessage({ text: `🎉🎉🎉 Welcome, ${xusername.split(' ')[0]} 🎉🎉🎉`, from: serverName }, '')
+
+    username = xusername
 })
 
 socket.on('userJoined', (username, acknowledgement) => {
