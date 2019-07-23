@@ -119,15 +119,21 @@ $shareLocationButton.addEventListener('click', ev => {
 
     $shareLocationButton.setAttribute('disabled', 'disabled')
     if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(position => {
-            socket.emit('shareLocation', {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
-            }, acknowledgement => {
-                $shareLocationButton.removeAttribute('disabled')
-            });
-        });
+        // navigator.geolocation.getCurrentPosition(position => {
+        //     socket.emit('shareLocation', {
+        //         latitude: position.coords.latitude,
+        //         longitude: position.coords.longitude
+        //     }, acknowledgement => {
+        //         $shareLocationButton.removeAttribute('disabled')
+        //     });
+        // });
 
+        socket.emit('shareLocation', {
+            latitude: 40.730066,
+            longitude: -73.991581
+        }, acknowledgement => {
+            $shareLocationButton.removeAttribute('disabled')
+        });
     } else {
         addMessage('Geolocation not supported')
     }
