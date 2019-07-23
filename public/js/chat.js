@@ -1,5 +1,7 @@
 const socket = io()
 
+// Constants
+const serverName = 'ChatApp Server'
 
 // Elements
 const $messageForm = document.getElementById('message-form')
@@ -13,9 +15,13 @@ const messageTemplate = document.getElementById('message-template').innerHTML
 const rejectedMessageTemplate = document.getElementById('rejected-message-template').innerHTML
 const locationMessageTemplate = document.getElementById('location-message-template').innerHTML
 
-const addMessage = (message, emoji = '💬') => {
+// Options
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+
+const addMessage = (message, emoji = '') => {
     const html = Mustache.render(messageTemplate, {
-        text: message,
+        text: message.text,
+        from: message.from,
         emoji,
         createdAt: moment(message.createdAt).format('HH:mm')
     })
@@ -40,19 +46,19 @@ const addLocationMessage = data => {
 }
 
 socket.on('message', (message) => {
-    addMessage(message.text)
+    addMessage(message)
 })
 
-socket.on('welcome', () => {
-    addMessage('🎉🎉🎉 Welcome 🎉🎉🎉', '')
+socket.on('welcome', username => {
+    addMessage({ text: `🎉🎉🎉 Welcome, ${username.split(' ')[0]} 🎉🎉🎉`, from: serverName }, '')
 })
 
-socket.on('userJoined', () => {
-    addMessage('A new user joined', '😎')
+socket.on('userJoined', (username, acknowledgement) => {
+    addMessage({text: `${username} joined`, from: serverName}, '😎')
 })
 
-socket.on('userLeft', () => {
-    addMessage('A user has left', '😟')
+socket.on('userLeft', (username, acknowledgement) => {
+    addMessage({text: `${username} left`, from: serverName}, '😟')
 })
 
 socket.on('locationShared', data => {
@@ -86,13 +92,10 @@ $messageForm.addEventListener('submit', ev => {
 })
 
 $shareLocationButton.addEventListener('click', ev => {
-    console.log(1);
 
     $shareLocationButton.setAttribute('disabled', 'disabled')
     if ("geolocation" in navigator) {
-        console.log(2);
         navigator.geolocation.getCurrentPosition(position => {
-            console.log(3);
             socket.emit('shareLocation', {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
@@ -103,5 +106,11 @@ $shareLocationButton.addEventListener('click', ev => {
 
     } else {
         addMessage('Geolocation not supported')
+    }
+})
+
+socket.emit('join', { username, room }, acknowledgement => {
+    if (acknowledgement) {
+        addMessage({text: acknowledgement, from: serverName}, '🚫')
     }
 })

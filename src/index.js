@@ -7,6 +7,7 @@ const socketio = require('socket.io')
 const Filter = require('bad-words')
 
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
+const { getUser, getUsersInRoom, addUser, removeUser } = require('./utils/users')
 
 const app = express()
 const server = http.createServer(app)
@@ -22,29 +23,43 @@ let count = 0
 io.on('connection', socket => {
     console.log('new websocket connection');
 
-    // socket.emit('welcome')
-    socket.emit('welcome')
-    socket.broadcast.emit('userJoined')
+    socket.on('sendMessage', (message, acknowledge) => {
+        const user = getUser(socket.id)
+        if(!user) return generateMessage('Message could not be sent')
 
-    // socket.emit('countUpdated', count)
-
-    socket.on('sendMessage', (message, acknowledge) => {        
         const filter = new Filter()
         if (filter.isProfane(message.text)) {
             return acknowledge('profanity')
         } else {
-            io.emit('message', generateMessage(message.text))
+            io.emit('message', generateMessage(message.text, user.username))
             acknowledge('delivered')
         }
     })
 
     socket.on('shareLocation', (coords, acknowledge) => {
-        io.emit('locationShared', generateLocationMessage(coords))
+        const user = getUser(socket.id)
+        if(!user) return generateMessage('Location could not be sent')
+
+        io.emit('locationShared', generateLocationMessage(coords, user.username))
         acknowledge()
     })
 
     socket.on('disconnect', () => {
-        io.emit('userLeft')
+        const user = removeUser(socket.id)
+        if (user) {
+            io.to(user.room).emit('userLeft', user.username)
+        }
+    })
+
+    socket.on('join', ({ username, room }, acknowledge) => {
+        const { error, user } = addUser({ id: socket.id, username, room })
+        if (error) return acknowledge(error)
+
+        socket.join(user.room)
+        socket.emit('welcome', user.username)
+        socket.broadcast.to(user.room).emit('userJoined', user.username)
+
+        acknowledge()
     })
 })
 

@@ -51,10 +51,15 @@ p {
     height: 20px;
 }
 
-.timestamp {
+.message-meta {
     font-size: .8em;
     color: #d4d4d4;
     margin-bottom: -12px;
+}
+
+.message-meta .from {
+    font-weight: bold;
+    color: #6c0082;
 }
 
 .btn.btn-primary,
@@ -84,10 +89,17 @@ p {
     display: flex;
     flex: 1;
     min-height: 0px;
+    padding: 20px 0;
 }
 
-/* the container for our overflowed content */
-.overflow-container {
+.chat__messages {
     flex: 1;
+    overflow: auto;
+}
+
+.chat__sidebar {
+    width: 0;
+    border-right: solid .5px #eee;
+    
     overflow: auto;
 }
