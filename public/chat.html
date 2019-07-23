@@ -18,8 +18,8 @@
         </header>
 
         <div class="content-wrapper">
-            <div class="chat__sidebar">
-                    <!-- Participants will appear here -->
+            <div id="sidebar" class="chat__sidebar">
+                <!-- Participants will appear here -->
             </div>
             <div class="chat__messages">
                 <div id="messages" class="col-sm-12 overflow-content">
@@ -71,6 +71,30 @@
             <p>📍 User sent location: <a href="{{url}}" target="_blank">My current location</a></p>
         </div>
         <div class="message-spacer"></div>
+    </script>
+
+    <script id="message-redirect-to-home-template" type="text/html">
+        <div class="message-meta">{{createdAt}} &middot; <span class="from">{{from}}</span></div>
+        <div class="message">
+            <p>{{emoji}} {{text}}</p>
+            <p class="text-center">
+                <a href="/" class="btn btn-primary">Return to login</a>
+            </p>
+        </div>
+        <div class="message-spacer"></div>
+    </script>
+
+    <script id="sidebar-template" type="text/html">
+        <h3 class="room-name">{{room}}</h3>
+        <h4>
+            Users
+            <span id="user-count-badge" class="badge badge-pill badge-primary">{{users.length}}</span>
+        </h4>
+        {{#users}}
+            <div class="participant">
+                {{username}}
+            </div>
+        {{/users}}
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

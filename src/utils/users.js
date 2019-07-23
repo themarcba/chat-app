@@ -18,7 +18,7 @@ const addUser = ({ id, username, room }) => {
     })    
 
     // Validate username
-    if (existingUser || username === 'server') return {
+    if (existingUser || username.toLowerCase() === 'server') return {
         error: 'Username is already in use',
         username
     }

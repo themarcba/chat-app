@@ -1,7 +1,7 @@
 const socket = io()
 
 // Constants
-const serverName = 'ChatApp Server'
+const serverName = 'ChatApp Server 🤖'
 
 // Elements
 const $messageForm = document.getElementById('message-form')
@@ -9,17 +9,21 @@ const $inputField = document.querySelector('#message-form input[name=message]')
 const $messageFormButton = document.getElementById('send-message')
 const $messagesDiv = document.getElementById('messages')
 const $shareLocationButton = document.getElementById('share-location')
+const $sidebar = document.getElementById('sidebar')
 
 // Templates
 const messageTemplate = document.getElementById('message-template').innerHTML
+const messageRedirectToHomeTemplate = document.getElementById('message-redirect-to-home-template').innerHTML
 const rejectedMessageTemplate = document.getElementById('rejected-message-template').innerHTML
 const locationMessageTemplate = document.getElementById('location-message-template').innerHTML
+const sidebarTemplate = document.getElementById('sidebar-template').innerHTML
 
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
-const addMessage = (message, emoji = '') => {
-    const html = Mustache.render(messageTemplate, {
+const addMessage = (message, emoji = '', redirectToHome = false) => {
+    const template = redirectToHome ? messageRedirectToHomeTemplate : messageTemplate
+    const html = Mustache.render(template, {
         text: message.text,
         from: message.from,
         emoji,
@@ -45,6 +49,11 @@ const addLocationMessage = data => {
     $messagesDiv.scrollIntoView({ behavior: 'smooth', block: 'end' })
 }
 
+const renderSidebar = ({ room, users }) => {
+    const html = Mustache.render(sidebarTemplate, { room, users })
+    $sidebar.innerHTML = html
+}
+
 socket.on('message', (message) => {
     addMessage(message)
 })
@@ -54,15 +63,21 @@ socket.on('welcome', username => {
 })
 
 socket.on('userJoined', (username, acknowledgement) => {
-    addMessage({text: `${username} joined`, from: serverName}, '😎')
+    addMessage({ text: `${username} joined`, from: serverName }, '😎')
 })
 
 socket.on('userLeft', (username, acknowledgement) => {
-    addMessage({text: `${username} left`, from: serverName}, '😟')
+    addMessage({ text: `${username} left`, from: serverName }, '😟')
 })
 
 socket.on('locationShared', data => {
     addLocationMessage(data)
+})
+
+
+socket.on('roomData', ({ room, users }) => {
+    renderSidebar({ room, users })
+
 })
 
 $messageForm.addEventListener('submit', ev => {
@@ -111,6 +126,6 @@ $shareLocationButton.addEventListener('click', ev => {
 
 socket.emit('join', { username, room }, acknowledgement => {
     if (acknowledgement) {
-        addMessage({text: acknowledgement, from: serverName}, '🚫')
+        addMessage({ text: acknowledgement, from: serverName }, '🚫', true)
     }
 })
