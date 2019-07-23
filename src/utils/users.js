@@ -4,7 +4,7 @@ const users = []
 
 const addUser = ({ id, username, room }) => {
     // Clean data
-    if (username) username = username.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    if (username) username = username.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     if (room) room = room.trim().toLowerCase()
 
     // Validate data
